@@ -1,0 +1,66 @@
+---
+# requirements install
+- name: Install Roles from Galaxy
+  hosts: all
+  connection: local
+  tasks:
+    - name: installing required ansible-galaxy roles
+      command: "ansible-galaxy install --ignore-errors -r requirements.yml"
+
+# Let's rock on ALM
+- name: Deploy Jenkins CI
+  hosts: jenkins_server
+  vars:
+    ansible_install_method: pip
+    ansible_install_version_pip: "2.8.0"
+  remote_user: "{{ ansible_ssh_user | default('vagrant') }}"
+  become: yes
+
+  roles:
+    - geerlingguy.repo-epel
+    - geerlingguy.jenkins
+    - geerlingguy.git
+    - tecris.maven
+    - geerlingguy.pip
+    - geerlingguy.ansible
+
+
+- name: Deploy Nexus Server
+  hosts: nexus_server
+  remote_user: "{{ ansible_ssh_user | default('vagrant') }}"
+  become: yes
+
+  roles:
+    - geerlingguy.java
+    - savoirfairelinux.nexus3-oss
+
+- name: Deploy Sonar Server
+  hosts: sonar_server
+  remote_user: "{{ ansible_ssh_user | default('vagrant') }}"
+  become: yes
+
+  roles:
+    - wtanaka.unzip
+    - geerlingguy.java
+    - lrk.sonarqube
+
+- name: On Premises CentOS
+  hosts: app_server
+  vars:
+    tomcat_jvm_memory_percentage_xms: 35
+    tomcat_jvm_memory_percentage_xmx: 35
+    tomcat_users:
+      - username: "tomcat"
+        password: "tomcat123"
+        roles: "tomcat,admin,manager,manager-gui"
+      - username: "sadiqh"
+        password: "sadiqh123"
+        roles: "tomcat"
+  remote_user: "{{ ansible_ssh_user | default('vagrant') }}"
+  become: yes
+
+  roles:
+    - jenkins-keys-config
+    - geerlingguy.java
+    - zaxos.tomcat-ansible-role
+

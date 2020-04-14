@@ -5,12 +5,11 @@
     groups: wheel
     append: yes
 
-- name: Allow 'wheel' group to have passwordless sudo
+- name: Allow 'jenkins' user to have passwordless sudo
   lineinfile:
     dest: /etc/sudoers
     state: present
-    regexp: '^%wheel'
-    line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+    line: 'jenkins ALL=(ALL) NOPASSWD: ALL'
     
 - name: Ensure SSH path
   file:

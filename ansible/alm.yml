@@ -62,5 +62,6 @@
   roles:
     - jenkins-keys-config
     - geerlingguy.java
+    - geerlingguy.git
     - zaxos.tomcat-ansible-role
 

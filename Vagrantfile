@@ -19,7 +19,7 @@ Vagrant.configure("2") do |config|
       awx.vm.network :forwarded_port, host: 80, guest: 80
       awx.vm.provider :virtualbox do |v|
          v.gui = false
-         v.memory = 4096
+         v.memory = 3000
          v.cpus = 2
          
       end
@@ -52,7 +52,7 @@ Vagrant.configure("2") do |config|
       app.vm.network :forwarded_port, host: 9090, guest: 8080
       app.vm.provider :virtualbox do |v|
         v.gui = false
-        v.memory = 3000
+        v.memory = 4096
       end
   end
 

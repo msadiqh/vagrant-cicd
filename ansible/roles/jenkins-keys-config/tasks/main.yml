@@ -5,7 +5,7 @@
     groups: wheel
     append: yes
 
-- name: Allow 'jenkins' user to have passwordless sudo
+- name: Allow 'jenkins' group to have passwordless sudo
   lineinfile:
     dest: /etc/sudoers
     state: present
